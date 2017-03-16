@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+	
+	<!-- 员工配置 -->
+	<package name="sta" namespace="/" extends="common">
+		<action name="staffAction_*" class="com.zoro.crm.staff.web.action.StaffAction" method="{1}">
+			<!-- 登入成功 -->
+			<result name="success" type="redirectAction">staffAction_home</result>
+			<!-- 登入失败 -->
+			<result name="login">/WEB-INF/pages/login.jsp</result>
+			<!-- 首页 -->
+			<result name="home">/WEB-INF/pages/frame.jsp</result>
+			<!-- 查询所有 -->
+			<result name="findAll">/WEB-INF/pages/staff/listStaff.jsp</result>
+		</action>
+	</package>
+</struts>

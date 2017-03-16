@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+	<!-- 配置常量 -->
+	<!-- 开发模式 -->
+	<constant name="struts.devMode" value="true"></constant>
+	<!-- 主题 -->
+	<constant name="struts.ui.theme" value="simple"></constant>
+	
+	<!-- 公共 -->
+	<package name="common" namespace="/" extends="struts-default">
+		<!-- 拦截器配置
+			1.
+			<interceptors>
+				<interceptor name="loginInterceptor" class="com.zoro.crm.staff.web.interceptor.LoginInterceptor"></interceptor>
+			</interceptors>
+			
+			每一个action单独使用一个拦截器
+			<action name="uiAction_*_*">
+				<result >/WEB-INF/pages/{1}/{2}.jsp</result>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="loginInterceptor"></interceptor-ref>
+			</action>
+			
+			2.
+			<interceptor-stack name="loginStack">
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="loginInterceptor"></interceptor-ref>
+			</interceptor-stack>
+			
+			<action name="uiAction_*_*">
+				<result >/WEB-INF/pages/{1}/{2}.jsp</result>
+				<interceptor-ref name="loginStack"></interceptor-ref>
+			</action>
+		 -->
+		<interceptors>
+			<!-- 声明注册拦截器 -->
+			<interceptor name="loginInterceptor" class="com.zoro.crm.staff.web.interceptor.LoginInterceptor"></interceptor>
+			<!-- 自定义拦截器栈 -->
+			<interceptor-stack name="loginStack">
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<!-- <interceptor-ref name="loginInterceptor"></interceptor-ref> -->
+				<interceptor-ref name="loginInterceptor">
+					<param name="excludeMethods">login</param>
+				</interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		
+		 <default-interceptor-ref name="loginStack"></default-interceptor-ref>
+		<!-- 全局结果集 -->
+		<global-results>
+			<result name="login">/WEB-INF/pages/login.jsp</result>
+		</global-results>
+	
+		<!-- 这里使用 了默认值，
+			1.action 默认使用 ActionSupport
+			2.默认调用ActionSupport的execute方法
+			3.调完方法默认返回"success"
+			4.使用通配符实现不同jsp页面的统一访问
+			-->
+		<action name="uiAction_*_*">
+			<result >/WEB-INF/pages/{1}/{2}.jsp</result>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="loginInterceptor"></interceptor-ref>
+		</action>
+	</package>
+	
+	<!-- 其它配置 -->
+	<include file="struts/struts-staff.xml"></include>
+</struts>
